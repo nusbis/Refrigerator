@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace BuildingRefrigerator;
 
-internal class shelf
+public class shelf
 {
     static private int _uniqueIdentifierShelf = 0;
-    public shelf( int shelfFloor, double place, List<Item> items=null)
+    public shelf( int shelfFloor, double place=20, List<Item> items=null)
     {
         Id = ++_uniqueIdentifierShelf;
         ShelfFloor = shelfFloor;
@@ -19,6 +19,12 @@ internal class shelf
 
     public int Id { get; }
     public int ShelfFloor { get; set; }
-    public double Place { get; set; }
+    public double Place { get; }
     public List<Item> Items { get; set; }
+
+    public static bool isThisShelfExsist(int idShelf)
+    {
+        return idShelf > 0 && idShelf <= _uniqueIdentifierShelf;
+    }
+
 }
