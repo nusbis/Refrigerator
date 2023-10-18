@@ -6,9 +6,25 @@ using System.Threading.Tasks;
 
 namespace BuildingRefrigerator;
 
-public enum Type { Food, Drinking }
+public enum TypeOfFood { Food=1, Drinking }
 
-public enum Cosher { Dairy, Meat , Fur }
+public enum Cosher { Dairy=1, Meat, Fur }
+
+enum Options
+{
+    PrintAll = 1,
+    FreeSpaceInTheFridge,
+    InsertItem,
+    TakingItemOut,
+    CleaningRefrigerator,
+    WhatDoYouWantToEat,
+    PrintingProductsAccordingToExpirationDate,
+    PrintingShelvesAccordingToAvailableSpace,
+    PrintingRefrigeratorsAccordingToAvailableSpace,
+    PreparingRefrigeratorForShopping=10,
+    Exit=100
+}
+
 
 internal class Enums
 {

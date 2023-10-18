@@ -9,7 +9,11 @@ namespace BuildingRefrigerator;
 public class Item: IComparable<Item?>
 {
     static private int _uniqueIdentifierItem = 0;
-    public Item(string name, Type type, Cosher cosher, DateTime expiryDate, double place, int idShelf=-1)
+    private int _idShelf;
+    private TypeOfFood _type;
+    private Cosher _cisher;
+    private DateTime _expiryDate;
+    public Item(string name, TypeOfFood type, Cosher cosher, DateTime expiryDate, double place, int idShelf=-1)
     {
         Id = ++_uniqueIdentifierItem;
         Name = name;
@@ -24,43 +28,43 @@ public class Item: IComparable<Item?>
     public string Name { get; set; }
     public int IdShelf
     {
-        get => IdShelf;
+        get => _idShelf;
         set
         {
             if (shelf.isThisShelfExsist(value))
-                IdShelf = value;
+                _idShelf = value;
             else
                 throw new Exception("this shelf isnt exsist!");
         }
     }
-    public Type Type
+    public TypeOfFood Type
     {
-        get => Type;
+        get => _type;
         set
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
-            Type = value;
+            _type = value;
         }
     }
     public Cosher Cosher
     {
-        get => Cosher;
+        get => _cisher;
         set
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
-            Cosher = value;
+            _cisher = value;
         }
     }
     public DateTime ExpiryDate
     {
-        get => ExpiryDate;
+        get => _expiryDate;
         private set
         {
             if (value < DateTime.Now)
                 throw new ArgumentException("Date is in the past");
-            ExpiryDate = value;
+            _expiryDate = value;
 
         }
     }

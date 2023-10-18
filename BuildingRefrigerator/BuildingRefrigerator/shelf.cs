@@ -21,7 +21,7 @@ public class shelf : IComparable<shelf>
     public int Id { get; }
     public int ShelfFloor { get; set; }
     public double Place { get; }
-    public List<Item?> Items { get; set; }
+    public List<Item?>? Items { get; set; }
 
     public override string ToString()
     { 
@@ -29,8 +29,10 @@ public class shelf : IComparable<shelf>
     }
     public  double HowMuchSpaceIsLeftOnTheShelf()
     {
-        List<Item?> items = this.Items;
+        List<Item?>? items = this.Items;
         double leftSpace = this.Place;
+        if(items==null)
+            return leftSpace;
         foreach (Item? item in items)
         {
             leftSpace -= item?.Place ?? throw new ArgumentException("This item is missing its size");

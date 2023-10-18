@@ -1,0 +1,15 @@
+C:\Code\Refrigerator\BuildingRefrigerator\BuildingRefrigerator\bin\Debug\net6.0\BuildingRefrigerator.exe
+C:\Code\Refrigerator\BuildingRefrigerator\BuildingRefrigerator\bin\Debug\net6.0\BuildingRefrigerator.deps.json
+C:\Code\Refrigerator\BuildingRefrigerator\BuildingRefrigerator\bin\Debug\net6.0\BuildingRefrigerator.runtimeconfig.json
+C:\Code\Refrigerator\BuildingRefrigerator\BuildingRefrigerator\bin\Debug\net6.0\BuildingRefrigerator.dll
+C:\Code\Refrigerator\BuildingRefrigerator\BuildingRefrigerator\bin\Debug\net6.0\BuildingRefrigerator.pdb
+C:\Code\Refrigerator\BuildingRefrigerator\BuildingRefrigerator\obj\Debug\net6.0\BuildingRefrigerator.csproj.AssemblyReference.cache
+C:\Code\Refrigerator\BuildingRefrigerator\BuildingRefrigerator\obj\Debug\net6.0\BuildingRefrigerator.GeneratedMSBuildEditorConfig.editorconfig
+C:\Code\Refrigerator\BuildingRefrigerator\BuildingRefrigerator\obj\Debug\net6.0\BuildingRefrigerator.AssemblyInfoInputs.cache
+C:\Code\Refrigerator\BuildingRefrigerator\BuildingRefrigerator\obj\Debug\net6.0\BuildingRefrigerator.AssemblyInfo.cs
+C:\Code\Refrigerator\BuildingRefrigerator\BuildingRefrigerator\obj\Debug\net6.0\BuildingRefrigerator.csproj.CoreCompileInputs.cache
+C:\Code\Refrigerator\BuildingRefrigerator\BuildingRefrigerator\obj\Debug\net6.0\BuildingRefrigerator.dll
+C:\Code\Refrigerator\BuildingRefrigerator\BuildingRefrigerator\obj\Debug\net6.0\refint\BuildingRefrigerator.dll
+C:\Code\Refrigerator\BuildingRefrigerator\BuildingRefrigerator\obj\Debug\net6.0\BuildingRefrigerator.pdb
+C:\Code\Refrigerator\BuildingRefrigerator\BuildingRefrigerator\obj\Debug\net6.0\BuildingRefrigerator.genruntimeconfig.cache
+C:\Code\Refrigerator\BuildingRefrigerator\BuildingRefrigerator\obj\Debug\net6.0\ref\BuildingRefrigerator.dll

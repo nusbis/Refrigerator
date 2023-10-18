@@ -4,13 +4,16 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
+
 
 namespace BuildingRefrigerator;
 
 public class refrigerator : IComparable<refrigerator?>
 {
     static private int _uniqueIdentifierRefrigerator = 0;
-    public refrigerator(string model, string color, int maximumShelves = 5, List<shelf> shelves = null)
+    private List<shelf?>? _shelves;
+    public refrigerator(string? model, string color, int maximumShelves = 5, List<shelf?>? shelves = null)
     {
         Id = ++_uniqueIdentifierRefrigerator;
         Model = model;
@@ -20,30 +23,28 @@ public class refrigerator : IComparable<refrigerator?>
     }
 
     public int Id { get; }
-    public string Model
+    public string? Model
     {
-        get => Model;
-        set
-        {
-            if (value == null)
-                throw new ArgumentException("A refrigerator model is missing");
-            Model = value;
-        }
+        get; set;
     }
     public string Color { get; set; }
-
     public int MaximumShelves { get; }
-    public List<shelf?> Shelves
+    public List<shelf?>? Shelves
     {
-        get => Shelves;
+        get => _shelves;
         set
         {
-            if (value == null)
-                Shelves = new List<shelf?> { new shelf(1) };
+            if (value is not null)
+            {
+                _shelves = value;
+            }
             else
-                Shelves = value;
+            {
+                _shelves = new List<shelf?> { new shelf(1) };
+            }
         }
     }
+
 
     public override string ToString()
     {
@@ -51,7 +52,7 @@ public class refrigerator : IComparable<refrigerator?>
     }
     public double HowMuchSpaceIsLeftOnTheRefrigerator()
     {
-        List<shelf?> shelves = this.Shelves;
+        List<shelf?>? shelves = this.Shelves;
         // double leftSpaceInRefrigerator = 0;
         //foreach (shelf shelf in shelves)
         //{
@@ -73,7 +74,7 @@ public class refrigerator : IComparable<refrigerator?>
         //    }
         //}
 
-        shelf? myShelf = this.Shelves.FirstOrDefault(shelf => shelf.HowMuchSpaceIsLeftOnTheShelf() >= myItem.Place);
+        shelf? myShelf = this.Shelves.FirstOrDefault(shelf => shelf?.HowMuchSpaceIsLeftOnTheShelf() >= myItem.Place);
 
 
         if (myShelf == null)
@@ -87,7 +88,6 @@ public class refrigerator : IComparable<refrigerator?>
         else
             myItem.IdShelf = myShelf.Id;
     }
-
     public Item? TakingAnItemOut(int idItemIssued)
     {
         Item? returnItem;
@@ -106,23 +106,15 @@ public class refrigerator : IComparable<refrigerator?>
 
         throw new Exception("There is no item in the refrigerator with the identifier:" + idItemIssued);
     }
-
     public void CleaningRefrigerator()
     {
-        //foreach (shelf shelf in this.Shelves)
-        //    foreach(Item item in shelf.Items)
-        //    {
-        //        if(item.ExpiryDate<DateTime.Now)
-        //            shelf.Items.Remove(item);
-        //    }
         this.Shelves.ForEach(shelf =>
         {
             shelf?.Items.RemoveAll(item => item?.ExpiryDate < DateTime.Now);
         });
 
     }
-
-    public List<Item?> WhatDoYouWantToEat(Cosher cosher, Type type)
+    public List<Item?> WhatDoYouWantToEat(Cosher cosher, TypeOfFood type)
     {
         //List<Item> items = new List<Item>();
         //foreach (shelf shelf in this.Shelves)
@@ -139,21 +131,18 @@ public class refrigerator : IComparable<refrigerator?>
                 returnItems.Add(item);
         return returnItems;
     }
-
     public List<Item?> SortedByExpirationDate()
     {
         List<Item?> items = allItems();
         items.Sort();
         return items;
     }
-
     public List<shelf?> SortByAvailableShelfSpace()
     {
         List<shelf?> shelfList = this.Shelves;
         shelfList.Sort();
         return shelfList;
     }
-
     private List<Item?> allItems()
     {
         List<Item?> items = new List<Item?>();
@@ -167,7 +156,6 @@ public class refrigerator : IComparable<refrigerator?>
     {
         throw new NotImplementedException();
     }
-
     public void Shopping()
     {
         if (this.HowMuchSpaceIsLeftOnTheRefrigerator() < 20)
@@ -198,4 +186,5 @@ public class refrigerator : IComparable<refrigerator?>
         }
 
     }
+   
 }
