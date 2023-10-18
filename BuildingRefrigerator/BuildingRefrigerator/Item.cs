@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BuildingRefrigerator;
 
-public class Item: IComparable<Item>
+public class Item: IComparable<Item?>
 {
     static private int _uniqueIdentifierItem = 0;
     public Item(string name, Type type, Cosher cosher, DateTime expiryDate, double place, int idShelf=-1)
