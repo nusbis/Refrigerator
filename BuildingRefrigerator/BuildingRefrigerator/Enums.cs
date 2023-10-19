@@ -1,6 +1,6 @@
 ﻿namespace BuildingRefrigerator;
-public enum TypeOfFood { Food=1, Drinking }
-public enum Cosher { Dairy=1, Meat, Fur }
+public enum TypeOfItem { Food=1, Drinking }
+public enum Kashrut { Dairy=1, Meat, Pareve }
 public enum Options
 {
     PrintAll = 1,

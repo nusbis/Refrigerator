@@ -4,7 +4,7 @@ class Program
     static void Main()
     {
         Options choice;
-        int idItem;
+        Guid idItem;
         try
         {
             refrigerator? myRefrigerator = BuildingRefrigerator();
@@ -22,11 +22,11 @@ class Program
                         break;
                     case Options.InsertItem:
                         Console.WriteLine("You put an item in the fridge:");
-                        myRefrigerator?.InsertingAnItem(buildingItem());
+                        myRefrigerator?.InsertItem(buildingItem());
                         break;
                     case Options.TakingItemOut:
                         Console.WriteLine("Insert an item ID to remove it from the water:");
-                        if (!int.TryParse(Console.ReadLine(), out idItem)) throw new Exception("idItem is invalid");
+                        if (!Guid.TryParse(Console.ReadLine(), out idItem)) throw new Exception("idItem is invalid");
                         myRefrigerator?.TakingAnItemOut(idItem);
                         break;
                     case Options.CleaningRefrigerator:
@@ -63,8 +63,8 @@ class Program
     private static Item? buildingItem()
     {
         string? name;
-        TypeOfFood type;
-        Cosher cosher;
+        TypeOfItem type;
+        Kashrut cosher;
         DateTime expiryDate;
         double sizeOfItem;
         Console.WriteLine(@"enter name,
@@ -74,14 +74,14 @@ type:
 cosher:
      Dairy
      Meat
-     Fur
+     Pareve
 expiryDate
 size of this Item");
         try
         {
             name = Console.ReadLine();
-            if (!(TypeOfFood.TryParse(Console.ReadLine(), out type))) throw new Exception("type is invalid");
-            if (!Cosher.TryParse(Console.ReadLine(), out cosher)) throw new Exception("cosher is invalid");
+            if (!(TypeOfItem.TryParse(Console.ReadLine(), out type))) throw new Exception("type is invalid");
+            if (!Kashrut.TryParse(Console.ReadLine(), out cosher)) throw new Exception("cosher is invalid");
             if (!DateTime.TryParse(Console.ReadLine(), out expiryDate)) throw new Exception("expiry Date is invalid");
             if (!double.TryParse(Console.ReadLine(), out sizeOfItem)) throw new Exception("sizeOfItem is invalid");
             return new Item(name, type, cosher, expiryDate, sizeOfItem);
@@ -90,19 +90,19 @@ size of this Item");
     }
     private static void whatDoYouWantToEat(refrigerator myRefrigerator)
     {
-        TypeOfFood type;
-        Cosher cosher;
+        TypeOfItem type;
+        Kashrut cosher;
         Console.WriteLine(@"enter type:
      Food
      Drinking, 
 cosher:
      Dairy
      Meat
-     Fur");
+     Pareve");
         try
         {
-            if (!TypeOfFood.TryParse(Console.ReadLine(), out type)) throw new Exception("type is invalid");
-            if (!Cosher.TryParse(Console.ReadLine(), out cosher)) throw new Exception("cosher is invalid");
+            if (!TypeOfItem.TryParse(Console.ReadLine(), out type)) throw new Exception("type is invalid");
+            if (!Kashrut.TryParse(Console.ReadLine(), out cosher)) throw new Exception("cosher is invalid");
             List<Item?> myItems = myRefrigerator?.WhatDoYouWantToEat(cosher, type);
             if (myItems == null)
                 Console.WriteLine("there are no food like you want");

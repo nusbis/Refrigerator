@@ -2,18 +2,17 @@
 
 public class shelf : IComparable<shelf>
 {
-    static private int _uniqueIdentifierShelf = 0;
     private List<Item?>? _items;
-    public shelf(int shelfFloor, double place = 20, List<Item> items = null)
+    public shelf(int shelfFloor, double area = 20, List<Item> items = null)
     {
-        Id = ++_uniqueIdentifierShelf;
+        ID = Guid.NewGuid();
         ShelfFloor = shelfFloor;
-        Place = place;
+        Area = area;
         Items = items;
     }
-    public int Id { get; }
+    public Guid ID { get;private set; }
     public int ShelfFloor { get; set; }
-    public double Place { get; }
+    public double Area { get; }
     public List<Item?>? Items
     {
         get => _items; set
@@ -31,13 +30,29 @@ public class shelf : IComparable<shelf>
     public double HowMuchSpaceIsLeftOnTheShelf()
     {
         List<Item?>? items = this.Items;
-        double leftSpace = this.Place;
+        double leftSpace = this.Area;
         if (items == null)
             return leftSpace;
-        leftSpace -= items.Where(item => item?.Place != null).Sum(item => item.Place);
+        leftSpace -= items.Where(item => item?.Area != null).Sum(item => item.Area);
         if (leftSpace < 0)
-            throw new Exception("There are products on this shelf that have no place");
+            throw new Exception("There are products on this shelf that have no space");
         return leftSpace;
+    }
+    public Item RemoveItem(Guid id)
+    {
+        Item returnItem;
+        foreach (Item it in this.Items)
+            if (it?.ID == id)
+            {
+                returnItem = it;
+                this.Items.Remove(it);
+                return returnItem;
+            }
+        return null;
+    }
+    public void DeletingExpiredItems()
+    {
+        this?.Items?.RemoveAll(item => item?.ExpiryDate < DateTime.Now);
     }
     public int CompareTo(shelf? other)
     {

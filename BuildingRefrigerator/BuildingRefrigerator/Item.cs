@@ -2,37 +2,36 @@
 
 public class Item : IComparable<Item?>
 {
-    static private int _uniqueIdentifierItem = 0;
-    private TypeOfFood _type;
-    private Cosher _cisher;
+    private TypeOfItem _type;
+    private Kashrut _cisher;
     private DateTime _expiryDate;
-    public Item(string name, TypeOfFood type, Cosher cosher, DateTime expiryDate, double place, int idShelf=-1)
+    public Item(string name, TypeOfItem type, Kashrut cosher, DateTime expiryDate, double area, Guid idShelf= default)
     {
-        Id = ++_uniqueIdentifierItem;
+        ID = Guid.NewGuid();
         Name = name;
         Type = type;
         Cosher = cosher;
         ExpiryDate = expiryDate;
-        Place = place;
+        Area = area;
         IdShelf = idShelf;
     }
-    public int Id { get; }
+    public Guid ID { get; private set; }
     public string Name { get; set; }
-    public int IdShelf { get; set; }
-    public TypeOfFood Type
+    public Guid IdShelf { get; set; }
+    public TypeOfItem Type
     {
         get => _type;
-        set
+        private set
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
             _type = value;
         }
     }
-    public Cosher Cosher
+    public Kashrut Cosher
     {
         get => _cisher;
-        set
+       private set
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
@@ -49,7 +48,7 @@ public class Item : IComparable<Item?>
             _expiryDate = value;
         }
     }
-    public double Place { get; }
+    public double Area { get; }
     public int CompareTo(Item? other)
     {
         return this.ExpiryDate.CompareTo(other?.ExpiryDate);
