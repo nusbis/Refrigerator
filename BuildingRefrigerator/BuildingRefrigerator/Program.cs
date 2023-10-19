@@ -1,32 +1,24 @@
-﻿
-using BuildingRefrigerator;
-using System.Diagnostics;
-using System.Drawing;
-using System.Xml.Schema;
-
+﻿using BuildingRefrigerator;
 class Program
 {
     static void Main()
     {
-        refrigerator? myRefrigerator = buildingRefrigerator();
         Options choice;
         int idItem;
-
-        printMenu();
-        if (!Options.TryParse(Console.ReadLine(), out choice)) throw new Exception("invalid choice");
         try
         {
+            refrigerator? myRefrigerator = BuildingRefrigerator();
+            printMenu();
+            if (!Options.TryParse(Console.ReadLine(), out choice)) throw new Exception("invalid choice");
             while ((int)choice != 100)
             {
-
                 switch (choice)
                 {
                     case Options.PrintAll:
-                        Console.WriteLine("print all of the items in the refrigerator:/n" );
-                        Console.WriteLine(myRefrigerator);
+                        Console.WriteLine("print all of the items in the refrigerator:\n{0}", myRefrigerator);
                         break;
                     case Options.FreeSpaceInTheFridge:
-                        Console.WriteLine("Prints the free space in the refrigerator:/n", myRefrigerator?.HowMuchSpaceIsLeftOnTheRefrigerator());
+                        Console.WriteLine("Prints the free space in the refrigerator:{0}\n", myRefrigerator?.HowMuchSpaceIsLeftOnTheRefrigerator());
                         break;
                     case Options.InsertItem:
                         Console.WriteLine("You put an item in the fridge:");
@@ -42,30 +34,19 @@ class Program
                         myRefrigerator?.CleaningRefrigerator();
                         break;
                     case Options.WhatDoYouWantToEat:
-                        TypeOfFood type;
-                        Cosher cosher;
-                        Console.WriteLine(@"enter name,
-type:
-   1- Food
-   2 Drinking, 
-cosher:
-   1-Dairy
-   2-Meat
-   3-Fur");
-                        if (!TypeOfFood.TryParse(Console.ReadLine(), out type)) throw new Exception("type is invalid");
-                        if (!Cosher.TryParse(Console.ReadLine(), out cosher)) throw new Exception("cosher is invalid");
-                        myRefrigerator?.WhatDoYouWantToEat(cosher, type);
+                        whatDoYouWantToEat(myRefrigerator);
                         break;
                     case Options.PrintingProductsAccordingToExpirationDate:
-                        myRefrigerator?.SortedByExpirationDate();
+                       printItems(myRefrigerator?.SortedByExpirationDate());
                         break;
                     case Options.PrintingShelvesAccordingToAvailableSpace:
-                        myRefrigerator?.SortByAvailableShelfSpace();
+                       printShelves(myRefrigerator?.SortByAvailableShelfSpace());
                         break;
                     case Options.PrintingRefrigeratorsAccordingToAvailableSpace:
-
+                        sortRefrigerators();
                         break;
                     case Options.PreparingRefrigeratorForShopping:
+                        Console.WriteLine("We are preparing refrigerator for shopping");
                         myRefrigerator?.Shopping();
                         break;
                     default:
@@ -76,40 +57,10 @@ cosher:
                 if (!Options.TryParse(Console.ReadLine(), out choice)) throw new Exception("invalid choice");
             }
         }
-        catch(Exception ex) { Console.WriteLine(ex); }
+        catch (Exception ex) { Console.WriteLine(@"Dear Customer: 
+{0}", ex.Message); }
     }
-
-
-    private static refrigerator? buildingRefrigerator()
-    {
-        string? model, color;
-        int maximumShelves, quantityShelvesBuildNow;
-        Console.WriteLine(@"Welcome!
-We would like to start building the refrigerator
-Please follow the instructions.
-enter model,
-color, 
-maximum of shelves");
-        model = Console.ReadLine();
-        color = Console.ReadLine();
-        int.TryParse(Console.ReadLine(), out maximumShelves);
-        refrigerator refrigerator = new refrigerator(model, color, maximumShelves);
-
-        Console.WriteLine("How many of the shelves you stated you want to build now?");
-        if (!int.TryParse(Console.ReadLine(), out quantityShelvesBuildNow)) throw new Exception("quantityShelvesBuildNow is in valid");
-        for (int i = quantityShelvesBuildNow; i > 1; i--)
-            refrigerator?.Shelves?.Add(buildingShelf(refrigerator.Shelves.Count));
-        return refrigerator;
-
-    }
-    public static shelf? buildingShelf(int floorShelf)
-    {
-        int sizeOfShelf;
-        Console.WriteLine("enter size of the shelf:");
-        int.TryParse(Console.ReadLine(), out sizeOfShelf);
-        return new shelf(floorShelf, sizeOfShelf);
-    }
-    public static Item? buildingItem()
+    private static Item? buildingItem()
     {
         string? name;
         TypeOfFood type;
@@ -118,20 +69,47 @@ maximum of shelves");
         double sizeOfItem;
         Console.WriteLine(@"enter name,
 type:
-   1- Food
-   2 Drinking, 
+     Food
+     Drinking 
 cosher:
-   1-Dairy
-   2-Meat
-   3-Fur,
-expiryDate,
+     Dairy
+     Meat
+     Fur
+expiryDate
 size of this Item");
-        name = Console.ReadLine();
-        if (!TypeOfFood.TryParse(Console.ReadLine(), out type)) throw new Exception("type is invalid");
-        if (!Cosher.TryParse(Console.ReadLine(), out cosher)) throw new Exception("cosher is invalid");
-        if (!DateTime.TryParse(Console.ReadLine(), out expiryDate)) throw new Exception("expiry Date is invalid");
-        if (!double.TryParse(Console.ReadLine(), out sizeOfItem)) throw new Exception("sizeOfItem is invalid");
-        return new Item(name, type, cosher, expiryDate, sizeOfItem);
+        try
+        {
+            name = Console.ReadLine();
+            if (!(TypeOfFood.TryParse(Console.ReadLine(), out type))) throw new Exception("type is invalid");
+            if (!Cosher.TryParse(Console.ReadLine(), out cosher)) throw new Exception("cosher is invalid");
+            if (!DateTime.TryParse(Console.ReadLine(), out expiryDate)) throw new Exception("expiry Date is invalid");
+            if (!double.TryParse(Console.ReadLine(), out sizeOfItem)) throw new Exception("sizeOfItem is invalid");
+            return new Item(name, type, cosher, expiryDate, sizeOfItem);
+        }
+        catch (Exception ex) { throw ex; }
+    }
+    private static void whatDoYouWantToEat(refrigerator myRefrigerator)
+    {
+        TypeOfFood type;
+        Cosher cosher;
+        Console.WriteLine(@"enter type:
+     Food
+     Drinking, 
+cosher:
+     Dairy
+     Meat
+     Fur");
+        try
+        {
+            if (!TypeOfFood.TryParse(Console.ReadLine(), out type)) throw new Exception("type is invalid");
+            if (!Cosher.TryParse(Console.ReadLine(), out cosher)) throw new Exception("cosher is invalid");
+            List<Item?> myItems = myRefrigerator?.WhatDoYouWantToEat(cosher, type);
+            if (myItems == null)
+                Console.WriteLine("there are no food like you want");
+            else
+                printItems(myItems);
+        }
+        catch(Exception ex) { throw ex; }
     }
     private static void printMenu()
     {
@@ -147,5 +125,50 @@ size of this Item");
 9: printing refrigerators according to available space
 10: preparing refrigerator for shopping
 100:exit");
+    }
+    private static refrigerator? BuildingRefrigerator()
+    {
+        string? model, color;
+        int maximumShelves = 5;
+        Console.WriteLine(@"Welcome!
+We would like to start building the refrigerator
+Please follow the instructions.
+enter model,
+color, 
+maximum of shelves");
+        try
+        {
+            model = Console.ReadLine();
+            color = Console.ReadLine();
+            if (!int.TryParse(Console.ReadLine(), out maximumShelves)) throw new Exception("maximumShelves is invalid");
+            return new refrigerator(model, color, maximumShelves);
+        }
+        catch (Exception ex) { throw ex; }
+    }
+    private static void printItems(List<Item> items)
+    {
+        foreach(Item it in items)
+            Console.WriteLine(it);
+    }
+    private static void printShelves(List<shelf> shelves)
+    {
+        foreach(shelf shelf in shelves)
+                Console.WriteLine(shelf);
+    }
+    private static void printRefrigerator(List<refrigerator?>? refrigerators)
+    {
+        foreach (refrigerator rf in refrigerators)
+            Console.WriteLine(rf);
+    }
+    private static void sortRefrigerators()
+    {
+        int countOfRefrigerators;
+        List<refrigerator?>? refrigerators = new List<refrigerator>();
+        Console.WriteLine("How many refrigerators would you like to build?");
+        if (!int.TryParse(Console.ReadLine(), out countOfRefrigerators)) throw new Exception("countOfRefrigerators is invalid");
+        for (int i = 0; i < countOfRefrigerators; i++)
+            refrigerators.Add(BuildingRefrigerator());
+        refrigerators.Sort();
+        printRefrigerator(refrigerators);
     }
 }

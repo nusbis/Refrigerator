@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BuildingRefrigerator;
-
+﻿namespace BuildingRefrigerator;
 public enum TypeOfFood { Food=1, Drinking }
-
 public enum Cosher { Dairy=1, Meat, Fur }
-
-enum Options
+public enum Options
 {
     PrintAll = 1,
     FreeSpaceInTheFridge,
@@ -23,9 +14,4 @@ enum Options
     PrintingRefrigeratorsAccordingToAvailableSpace,
     PreparingRefrigeratorForShopping=10,
     Exit=100
-}
-
-
-internal class Enums
-{
 }
