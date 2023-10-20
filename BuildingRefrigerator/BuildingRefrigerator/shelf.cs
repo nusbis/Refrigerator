@@ -2,7 +2,7 @@
 
 public class shelf : IComparable<shelf>
 {
-    private List<Item?>? _items;
+    private List<Item> _items;
     public shelf(int shelfFloor, double area = 20, List<Item> items = null)
     {
         ID = Guid.NewGuid();
@@ -13,12 +13,12 @@ public class shelf : IComparable<shelf>
     public Guid ID { get;private set; }
     public int ShelfFloor { get; set; }
     public double Area { get; }
-    public List<Item?>? Items
+    public List<Item> Items
     {
         get => _items; set
         {
             if (value == null)
-                _items = new List<Item?>();
+                _items = new List<Item>();
             else
                 _items = value;
         }
@@ -29,11 +29,11 @@ public class shelf : IComparable<shelf>
     }
     public double HowMuchSpaceIsLeftOnTheShelf()
     {
-        List<Item?>? items = this.Items;
+        List<Item> items = this.Items;
         double leftSpace = this.Area;
         if (items == null)
             return leftSpace;
-        leftSpace -= items.Where(item => item?.Area != null).Sum(item => item.Area);
+        leftSpace -= items.Where(item => item.Area != null).Sum(item => item.Area);
         if (leftSpace < 0)
             throw new Exception("There are products on this shelf that have no space");
         return leftSpace;
@@ -42,7 +42,7 @@ public class shelf : IComparable<shelf>
     {
         Item returnItem;
         foreach (Item it in this.Items)
-            if (it?.ID == id)
+            if (it.ID == id)
             {
                 returnItem = it;
                 this.Items.Remove(it);
@@ -52,10 +52,10 @@ public class shelf : IComparable<shelf>
     }
     public void DeletingExpiredItems()
     {
-        this?.Items?.RemoveAll(item => item?.ExpiryDate < DateTime.Now);
+        this.Items.RemoveAll(item => item.ExpiryDate < DateTime.Now);
     }
-    public int CompareTo(shelf? other)
+    public int CompareTo(shelf other)
     {
-        return other.HowMuchSpaceIsLeftOnTheShelf().CompareTo(this?.HowMuchSpaceIsLeftOnTheShelf());
+        return other.HowMuchSpaceIsLeftOnTheShelf().CompareTo(this.HowMuchSpaceIsLeftOnTheShelf());
     }
 }

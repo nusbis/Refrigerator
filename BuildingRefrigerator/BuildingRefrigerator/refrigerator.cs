@@ -1,11 +1,11 @@
 ﻿namespace BuildingRefrigerator;
 
-public class refrigerator : IComparable<refrigerator?>
+public class refrigerator : IComparable<refrigerator>
 {
-    private List<shelf?>? _shelves;
-    private string? _model;
+    private List<shelf> _shelves;
+    private string _model;
     private int _maximumShelves;
-    public refrigerator(string? model, string color, int maximumShelves, List<shelf?>? shelves = null)
+    public refrigerator(string model, string color, int maximumShelves, List<shelf> shelves = null)
     {
         ID = Guid.NewGuid();
         Model = model;
@@ -14,7 +14,7 @@ public class refrigerator : IComparable<refrigerator?>
         Shelves = shelves;
     }
     public Guid ID { get; private set; }
-    public string? Model
+    public string Model
     {
         get=> _model;
        private set
@@ -25,7 +25,7 @@ public class refrigerator : IComparable<refrigerator?>
         }
     }
     public string Color { get; set; }
-    public List<shelf?>? Shelves
+    public List<shelf> Shelves
     {
         get => _shelves;
       private  set
@@ -36,7 +36,7 @@ public class refrigerator : IComparable<refrigerator?>
             }
             else
             {
-                _shelves = new List<shelf?>();
+                _shelves = new List<shelf>();
                 for (int i = 1; i <= _maximumShelves; i++)
                     _shelves.Add(new shelf(i));
             }
@@ -52,19 +52,19 @@ public class refrigerator : IComparable<refrigerator?>
     }
     public void InsertItem(Item myItem)
     {
-        shelf? myShelf = this?.Shelves?.FirstOrDefault(shelf => shelf?.HowMuchSpaceIsLeftOnTheShelf() >= myItem.Area);
+        shelf myShelf = this.Shelves.FirstOrDefault(shelf => shelf.HowMuchSpaceIsLeftOnTheShelf() >= myItem.Area);
         if (myShelf == null)
             throw new Exception("there are no space in the refrigerator");
         else
         {
             myItem.IdShelf = myShelf.ID;
-            myShelf?.Items?.Add(myItem);
+            myShelf.Items.Add(myItem);
         }
     }
-    public Item? TakingAnItemOut(Guid idItemIssued)
+    public Item TakingAnItemOut(Guid idItemIssued)
     {
-        Item? returnItem;
-        foreach (shelf? shelf in this.Shelves)
+        Item returnItem;
+        foreach (shelf shelf in this.Shelves)
         {
             returnItem = shelf.RemoveItem(idItemIssued);
             if( returnItem != null )
@@ -74,31 +74,31 @@ public class refrigerator : IComparable<refrigerator?>
     }
     public void CleaningRefrigerator()
     {
-        this.Shelves?.ForEach(shelf =>
+        this.Shelves.ForEach(shelf =>
         {
-            shelf?.DeletingExpiredItems();
+            shelf.DeletingExpiredItems();
         });
 
     }
-    public List<Item?> WhatDoYouWantToEat(Kashrut cosher, TypeOfItem type)
+    public List<Item> WhatDoYouWantToEat(Kashrut cosher, TypeOfItem type)
     {
-       return allItems().Where(item => item?.Cosher == cosher && item.Type == type).ToList();     
+       return allItems().Where(item => item.Cosher == cosher && item.Type == type).ToList();     
     }
-    public List<Item?> SortedByExpirationDate()
+    public List<Item> SortedByExpirationDate()
     {
-        List<Item?> items = allItems();
+        List<Item> items = allItems();
         items.Sort();
         return items;
     }
-    public List<shelf?> SortByAvailableShelfSpace()
+    public List<shelf> SortByAvailableShelfSpace()
     {
-        List<shelf?> shelfList = this.Shelves.ToList();
+        List<shelf> shelfList = this.Shelves.ToList();
         shelfList.Sort();
         return shelfList;
     }
-    public int CompareTo(refrigerator? other)
+    public int CompareTo(refrigerator other)
     {
-        return other.HowMuchSpaceIsLeftOnTheRefrigerator().CompareTo(this?.HowMuchSpaceIsLeftOnTheRefrigerator());
+        return other.HowMuchSpaceIsLeftOnTheRefrigerator().CompareTo(this.HowMuchSpaceIsLeftOnTheRefrigerator());
     }
     public void Shopping()
     {
@@ -107,19 +107,19 @@ public class refrigerator : IComparable<refrigerator?>
             CleaningRefrigerator();
             if (this.HowMuchSpaceIsLeftOnTheRefrigerator() < 20)
             {
-                List<Item?> productsSortedByDate = this.SortedByExpirationDate();
+                List<Item> productsSortedByDate = this.SortedByExpirationDate();
 
-                List<Item?> items = productsSortedByDate.Where(item => (item?.ExpiryDate < DateTime.Now.AddDays(3) && item.Cosher == Kashrut.Dairy)
-                 || (item?.ExpiryDate < DateTime.Now.AddDays(7) && item.Cosher == Kashrut.Meat)
-                 || (item?.ExpiryDate < DateTime.Now.AddDays(1) && item.Cosher == Kashrut.Pareve)).ToList();
+                List<Item> items = productsSortedByDate.Where(item => (item.ExpiryDate < DateTime.Now.AddDays(3) && item.Cosher == Kashrut.Dairy)
+                 || (item.ExpiryDate < DateTime.Now.AddDays(7) && item.Cosher == Kashrut.Meat)
+                 || (item.ExpiryDate < DateTime.Now.AddDays(1) && item.Cosher == Kashrut.Pareve)).ToList();
 
-                productsSortedByDate.RemoveAll(item => (item?.ExpiryDate < DateTime.Now.AddDays(3) && item.Cosher == Kashrut.Dairy)
-            || (item?.ExpiryDate < DateTime.Now.AddDays(7) && item.Cosher == Kashrut.Meat)
-            || (item?.ExpiryDate < DateTime.Now.AddDays(1) && item.Cosher == Kashrut.Pareve));
+                productsSortedByDate.RemoveAll(item => (item.ExpiryDate < DateTime.Now.AddDays(3) && item.Cosher == Kashrut.Dairy)
+            || (item.ExpiryDate < DateTime.Now.AddDays(7) && item.Cosher == Kashrut.Meat)
+            || (item.ExpiryDate < DateTime.Now.AddDays(1) && item.Cosher == Kashrut.Pareve));
 
                 if (this.HowMuchSpaceIsLeftOnTheRefrigerator() < 20)
                 {
-                    productsSortedByDate = (List<Item?>)productsSortedByDate.Concat(items);
+                    productsSortedByDate = (List<Item>)productsSortedByDate.Concat(items);
 
                     throw new Exception("Sorry, This is not the time to shop");
                 }
@@ -130,8 +130,8 @@ public class refrigerator : IComparable<refrigerator?>
         }
 
     }
-    private List<Item?> allItems()
+    private List<Item> allItems()
     {
-        return this?.Shelves?.SelectMany(shelf => shelf.Items).ToList();
+        return this.Shelves.SelectMany(shelf => shelf.Items).ToList();
     }
 }

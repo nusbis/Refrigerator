@@ -1,11 +1,10 @@
 ﻿namespace BuildingRefrigerator;
 
-public class Item : IComparable<Item?>
+public class Item : IComparable<Item>
 {
     private TypeOfItem _type;
     private Kashrut _cisher;
-    private DateTime _expiryDate;
-    public Item(string name, TypeOfItem type, Kashrut cosher, DateTime expiryDate, double area, Guid idShelf= default)
+    public Item(string name, TypeOfItem type, Kashrut cosher, DateTime expiryDate, double area, Guid idShelf = default)
     {
         ID = Guid.NewGuid();
         Name = name;
@@ -31,27 +30,18 @@ public class Item : IComparable<Item?>
     public Kashrut Cosher
     {
         get => _cisher;
-       private set
+        private set
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
             _cisher = value;
         }
     }
-    public DateTime ExpiryDate
-    {
-        get => _expiryDate;
-        private set
-        {
-            if (value < DateTime.Now)
-                throw new ArgumentException("Date is in the past");
-            _expiryDate = value;
-        }
-    }
+    public DateTime ExpiryDate { get;private set; }
     public double Area { get; }
-    public int CompareTo(Item? other)
+    public int CompareTo(Item other)
     {
-        return this.ExpiryDate.CompareTo(other?.ExpiryDate);
+        return this.ExpiryDate.CompareTo(other.ExpiryDate);
     }
     public override string ToString()
     {

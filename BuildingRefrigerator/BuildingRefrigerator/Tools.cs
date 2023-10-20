@@ -23,7 +23,7 @@ public static class Tools
             {
                 foreach (var listItem in list)
                 {
-                    str += listItem;
+                    str += listItem+"\n";
                 }
             }
             else
