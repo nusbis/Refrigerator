@@ -50,6 +50,11 @@ public class shelf : IComparable<shelf>
             }
         return null;
     }
+    public void AddItem(Item it)
+    {
+        it.IdShelf = this.ID;
+        this.Items.Add(it);
+    }
     public void DeletingExpiredItems()
     {
         this.Items.RemoveAll(item => item.ExpiryDate < DateTime.Now);

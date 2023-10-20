@@ -11,44 +11,34 @@ public class refrigerator : IComparable<refrigerator>
         Model = model;
         Color = color;
         _maximumShelves = maximumShelves;
-        Shelves = shelves;
+        if (shelves == null)
+        {
+            Shelves = new List<shelf>();
+            this.buildAllTheShelves(maximumShelves);
+        }
+        else
+            Shelves = shelves;
     }
     public Guid ID { get; private set; }
     public string Model
     {
-        get=> _model;
-       private set
+        get => _model;
+        private set
         {
-            if (value==null)
+            if (value == null)
                 throw new Exception("A refrigerator model is missing. Cannot create a fridge");
             _model = value;
         }
     }
     public string Color { get; set; }
-    public List<shelf> Shelves
-    {
-        get => _shelves;
-      private  set
-        {
-            if (value is not null)
-            {
-                _shelves = value;
-            }
-            else
-            {
-                _shelves = new List<shelf>();
-                for (int i = 1; i <= _maximumShelves; i++)
-                    _shelves.Add(new shelf(i));
-            }
-        }
-    }
+    public List<shelf> Shelves { get; private set; }
     public override string ToString()
     {
-        return "refrigerator:  "+ this.ToStringProperty();
+        return "refrigerator:  " + this.ToStringProperty();
     }
     public double HowMuchSpaceIsLeftOnTheRefrigerator()
     {
-        return this.Shelves.Sum(shelf => shelf?.HowMuchSpaceIsLeftOnTheShelf() ??0);
+        return this.Shelves.Sum(shelf => shelf?.HowMuchSpaceIsLeftOnTheShelf() ?? 0);
     }
     public void InsertItem(Item myItem)
     {
@@ -56,10 +46,7 @@ public class refrigerator : IComparable<refrigerator>
         if (myShelf == null)
             throw new Exception("there are no space in the refrigerator");
         else
-        {
-            myItem.IdShelf = myShelf.ID;
-            myShelf.Items.Add(myItem);
-        }
+            myShelf.AddItem(myItem);
     }
     public Item TakingAnItemOut(Guid idItemIssued)
     {
@@ -67,10 +54,10 @@ public class refrigerator : IComparable<refrigerator>
         foreach (shelf shelf in this.Shelves)
         {
             returnItem = shelf.RemoveItem(idItemIssued);
-            if( returnItem != null )
+            if (returnItem != null)
                 return returnItem;
         }
-            throw new Exception("There is no item in the refrigerator with the identifier:" + idItemIssued);
+        throw new Exception("There is no item in the refrigerator with the identifier:" + idItemIssued);
     }
     public void CleaningRefrigerator()
     {
@@ -82,7 +69,7 @@ public class refrigerator : IComparable<refrigerator>
     }
     public List<Item> WhatDoYouWantToEat(Kashrut cosher, TypeOfItem type)
     {
-       return allItems().Where(item => item.Cosher == cosher && item.Type == type).ToList();     
+        return allItems().Where(item => item.Cosher == cosher && item.Type == type).ToList();
     }
     public List<Item> SortedByExpirationDate()
     {
@@ -133,5 +120,10 @@ public class refrigerator : IComparable<refrigerator>
     private List<Item> allItems()
     {
         return this.Shelves.SelectMany(shelf => shelf.Items).ToList();
+    }
+    private void buildAllTheShelves(int maximumShelves)
+    {
+        for (int i = 1; i <= _maximumShelves; i++)
+            this.Shelves.Add(new shelf(i));
     }
 }

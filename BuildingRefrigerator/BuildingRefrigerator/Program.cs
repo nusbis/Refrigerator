@@ -129,7 +129,7 @@ cosher:
     }
     private static refrigerator BuildingRefrigerator()
     {
-        string model, color;
+        string? model, color;
         int maximumShelves = 5;
         Console.WriteLine(@"Welcome!
 We would like to start building the refrigerator
