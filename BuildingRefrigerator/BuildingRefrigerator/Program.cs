@@ -75,7 +75,7 @@ cosher:
      Dairy
      Meat
      Pareve
-expiryDate
+expiryDate, in format: d/m/y
 size of this Item");
         try
         {
