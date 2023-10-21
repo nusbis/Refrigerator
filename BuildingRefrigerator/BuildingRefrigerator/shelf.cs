@@ -1,9 +1,9 @@
 ﻿namespace BuildingRefrigerator;
 
-public class shelf : IComparable<shelf>
+public class Shelf : IComparable<Shelf>
 {
     private List<Item> _items;
-    public shelf(int shelfFloor, double area = 20, List<Item> items = null)
+    public Shelf(int shelfFloor, double area = 20, List<Item> items = null)
     {
         ID = Guid.NewGuid();
         ShelfFloor = shelfFloor;
@@ -59,7 +59,7 @@ public class shelf : IComparable<shelf>
     {
         this.Items.RemoveAll(item => item.ExpiryDate < DateTime.Now);
     }
-    public int CompareTo(shelf other)
+    public int CompareTo(Shelf other)
     {
         return other.HowMuchSpaceIsLeftOnTheShelf().CompareTo(this.HowMuchSpaceIsLeftOnTheShelf());
     }

@@ -1,11 +1,11 @@
 ﻿namespace BuildingRefrigerator;
 
-public class refrigerator : IComparable<refrigerator>
+public class Refrigerator : IComparable<Refrigerator>
 {
-    private List<shelf> _shelves;
+    private List<Shelf> _shelves;
     private string _model;
     private int _maximumShelves;
-    public refrigerator(string model, string color, int maximumShelves, List<shelf> shelves = null)
+    public Refrigerator(string model, string color, int maximumShelves, List<Shelf> shelves = null)
     {
         ID = Guid.NewGuid();
         Model = model;
@@ -13,7 +13,7 @@ public class refrigerator : IComparable<refrigerator>
         _maximumShelves = maximumShelves;
         if (shelves == null)
         {
-            Shelves = new List<shelf>();
+            Shelves = new List<Shelf>();
             this.buildAllTheShelves(maximumShelves);
         }
         else
@@ -31,7 +31,7 @@ public class refrigerator : IComparable<refrigerator>
         }
     }
     public string Color { get; set; }
-    public List<shelf> Shelves { get; private set; }
+    public List<Shelf> Shelves { get; private set; }
     public override string ToString()
     {
         return "refrigerator:  " + this.ToStringProperty();
@@ -42,7 +42,7 @@ public class refrigerator : IComparable<refrigerator>
     }
     public void InsertItem(Item myItem)
     {
-        shelf myShelf = this.Shelves.FirstOrDefault(shelf => shelf.HowMuchSpaceIsLeftOnTheShelf() >= myItem.Area);
+        Shelf myShelf = this.Shelves.FirstOrDefault(shelf => shelf.HowMuchSpaceIsLeftOnTheShelf() >= myItem.Area);
         if (myShelf == null)
             throw new Exception("there are no space in the refrigerator");
         else
@@ -51,7 +51,7 @@ public class refrigerator : IComparable<refrigerator>
     public Item TakingAnItemOut(Guid idItemIssued)
     {
         Item returnItem;
-        foreach (shelf shelf in this.Shelves)
+        foreach (Shelf shelf in this.Shelves)
         {
             returnItem = shelf.RemoveItem(idItemIssued);
             if (returnItem != null)
@@ -77,13 +77,13 @@ public class refrigerator : IComparable<refrigerator>
         items.Sort();
         return items;
     }
-    public List<shelf> SortByAvailableShelfSpace()
+    public List<Shelf> SortByAvailableShelfSpace()
     {
-        List<shelf> shelfList = this.Shelves.ToList();
+        List<Shelf> shelfList = this.Shelves.ToList();
         shelfList.Sort();
         return shelfList;
     }
-    public int CompareTo(refrigerator other)
+    public int CompareTo(Refrigerator other)
     {
         return other.HowMuchSpaceIsLeftOnTheRefrigerator().CompareTo(this.HowMuchSpaceIsLeftOnTheRefrigerator());
     }
@@ -124,6 +124,6 @@ public class refrigerator : IComparable<refrigerator>
     private void buildAllTheShelves(int maximumShelves)
     {
         for (int i = 1; i <= _maximumShelves; i++)
-            this.Shelves.Add(new shelf(i));
+            this.Shelves.Add(new Shelf(i));
     }
 }

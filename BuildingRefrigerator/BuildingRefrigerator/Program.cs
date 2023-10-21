@@ -7,7 +7,7 @@ class Program
         Guid idItem;
         try
         {
-            refrigerator myRefrigerator = BuildingRefrigerator();
+            Refrigerator myRefrigerator = BuildingRefrigerator();
             printMenu();
             if (!Options.TryParse(Console.ReadLine(), out choice)) throw new Exception("invalid choice");
             while ((int)choice != 100)
@@ -89,7 +89,7 @@ size of this Item");
         }
         catch (Exception ex) { throw ex; }
     }
-    private static void whatDoYouWantToEat(refrigerator myRefrigerator)
+    private static void whatDoYouWantToEat(Refrigerator myRefrigerator)
     {
         TypeOfItem type;
         Kashrut cosher;
@@ -127,7 +127,7 @@ cosher:
 10: preparing refrigerator for shopping
 100:exit");
     }
-    private static refrigerator BuildingRefrigerator()
+    private static Refrigerator BuildingRefrigerator()
     {
         string? model, color;
         int maximumShelves = 5;
@@ -142,7 +142,7 @@ maximum of shelves");
             model = Console.ReadLine();
             color = Console.ReadLine();
             if (!int.TryParse(Console.ReadLine(), out maximumShelves)) throw new Exception("maximumShelves is invalid");
-            return new refrigerator(model, color, maximumShelves);
+            return new Refrigerator(model, color, maximumShelves);
         }
         catch (Exception ex) { throw ex; }
     }
@@ -151,20 +151,20 @@ maximum of shelves");
         foreach (Item it in items)
             Console.WriteLine(it);
     }
-    private static void printShelves(List<shelf> shelves)
+    private static void printShelves(List<Shelf> shelves)
     {
-        foreach (shelf shelf in shelves)
+        foreach (Shelf shelf in shelves)
             Console.WriteLine(shelf);
     }
-    private static void printRefrigerator(List<refrigerator> refrigerators)
+    private static void printRefrigerator(List<Refrigerator> refrigerators)
     {
-        foreach (refrigerator rf in refrigerators)
+        foreach (Refrigerator rf in refrigerators)
             Console.WriteLine(rf);
     }
     private static void sortRefrigerators()
     {
         int countOfRefrigerators;
-        List<refrigerator> refrigerators = new List<refrigerator>();
+        List<Refrigerator> refrigerators = new List<Refrigerator>();
         Console.WriteLine("How many refrigerators would you like to build?");
         if (!int.TryParse(Console.ReadLine(), out countOfRefrigerators)) throw new Exception("countOfRefrigerators is invalid");
         for (int i = 0; i < countOfRefrigerators; i++)
