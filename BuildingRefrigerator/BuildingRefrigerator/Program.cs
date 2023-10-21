@@ -85,6 +85,7 @@ size of this Item");
             if (!DateTime.TryParse(Console.ReadLine(), out expiryDate)) throw new Exception("expiry Date is invalid");
             if (expiryDate < DateTime.Now) throw new ArgumentException("Date is in the past");
             if (!double.TryParse(Console.ReadLine(), out sizeOfItem)) throw new Exception("sizeOfItem is invalid");
+            if(sizeOfItem<=0) throw new Exception("sizeOfItem is negative");
             return new Item(name, type, cosher, expiryDate, sizeOfItem);
         }
         catch (Exception ex) { throw ex; }
